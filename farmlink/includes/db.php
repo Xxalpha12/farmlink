@@ -1,19 +1,17 @@
 <?php
 /**
  * Database connection for Farm Link
- *
- * Reads from environment variables first (set these in Render's dashboard
- * under your service -> Environment). Falls back to local defaults so it
- * still works unchanged in Termux / shared hosting.
  */
+
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_NAME', getenv('DB_NAME') ?: 'farmlink');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
 
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
         [
@@ -23,5 +21,5 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    die('Database connection failed. Check includes/db.php credentials. (' . $e->getMessage() . ')');
+    die('Database connection failed. Check database configuration. (' . $e->getMessage() . ')');
 }
